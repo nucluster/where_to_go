@@ -141,3 +141,4 @@ cython_debug/
 .idea/
 static/
 media/
+*.tar.gz
