@@ -20,14 +20,12 @@ from django.shortcuts import render
 from django.conf import settings
 from django.conf.urls.static import static
 
-
-def show_dummy(request):
-    return render(request, 'index.html')
+from places.views import index
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', show_dummy),
+    path('', index),
 ]
 
 if settings.DEBUG:
