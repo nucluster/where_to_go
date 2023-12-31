@@ -5,6 +5,5 @@ from .models import Place
 
 
 def index(request):
-    data = serialize("json", Place.objects.all(), geometry_field='point', fields=('name',))
+    data = serialize("json", Place.objects.all())
     return render(request, 'index.html', {'json_data': data})
-
