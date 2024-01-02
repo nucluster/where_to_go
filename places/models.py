@@ -1,5 +1,9 @@
+import os
+
 from django.db import models
 import uuid
+
+from django.conf import settings
 
 
 def user_directory_path(instance, filename):

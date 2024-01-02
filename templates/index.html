@@ -4,11 +4,9 @@
     <title>Your Template</title>
 </head>
 <body>
-<h1>{{ json_data }}</h1>
-    <script>
-        var jsonData = {{ json_data|safe }};
-        // Теперь вы можете использовать jsonData в вашем JavaScript коде
-        console.log(jsonData)
-    </script>
+<!--<h1>{{ json_data }}</h1>-->
+<script id="places-geojson" type="application/json">
+    {{ json_data|safe }}
+</script>
 </body>
 </html>
