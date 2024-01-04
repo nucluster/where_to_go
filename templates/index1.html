@@ -4,8 +4,9 @@
     <title>Your Template</title>
 </head>
 <body>
-    {{ data }}
-{{ data|json_script:"places-geojson" }}
+    {{ json_data }}
+<script type="application/json" id="places-geojson">
+    {{ json_data|safe }}
 </script>
 </body>
 </html>

@@ -27,6 +27,7 @@ class Image(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     image = models.ImageField(upload_to=user_directory_path,
                               verbose_name='Фотография')
+    url = models.URLField(default='https://yastatic.net/s3/home/new-year-feed/promo_toys_1/0.png')
 
     def __str__(self):
         return f'Фото {self.pk}'
