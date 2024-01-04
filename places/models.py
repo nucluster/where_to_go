@@ -1,9 +1,7 @@
-import os
-
-from django.db import models
 import uuid
+from django.db import models
 
-from django.conf import settings
+from pytils.translit import slugify
 
 
 def user_directory_path(instance, filename):
@@ -13,21 +11,32 @@ def user_directory_path(instance, filename):
 
 class Place(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название места')
+    slug = models.CharField(verbose_name='slug', max_length=255, blank=True,
+                            unique=True)
     description_short = models.TextField(verbose_name='Краткое описание')
     description_long = models.TextField(verbose_name='Полное описание')
-    coordinates = models.JSONField(verbose_name='Географические координаты')
+    longitude = models.FloatField(verbose_name='Долгота')
+    latitude = models.FloatField(verbose_name='Широта')
     imgs = models.ManyToManyField('Image', related_name='places',
                                   verbose_name='Фотографии')
 
     def __str__(self):
         return self.title
 
+    @property
+    def coordinates(self):
+        return {'lng': str(self.longitude), 'lat': str(self.latitude)}
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
+
 
 class Image(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     image = models.ImageField(upload_to=user_directory_path,
                               verbose_name='Фотография')
-    url = models.URLField(default='https://yastatic.net/s3/home/new-year-feed/promo_toys_1/0.png')
 
     def __str__(self):
         return f'Фото {self.pk}'
