@@ -15,10 +15,10 @@ def to_geojson(places, request):
             'description_short': place.description_short,
             'description_long': place.description_long,
             'coordinates': place.coordinates,
-            'imgs': [request.build_absolute_uri(img.image.url) for img in
-                     place.imgs.all()],
+            'imgs': [request.build_absolute_uri(image.image.url) for image in
+                     place.images.all()],
         }
-        # Сохраняем в JSON detailsUrl
+        # Сохраняем detailsUrl в json-файл
         with open(BASE_DIR/STATIC_URL/'places'/f'place_{place.id}.json', 'w') as json_file:
             json.dump(details_url, json_file, indent=2)
         place_properties = {

@@ -5,8 +5,8 @@ from pytils.translit import slugify
 
 
 def user_directory_path(instance, filename):
-    uniqfilename = f"{instance.id}.{filename.split('.')[-1]}"
-    return f'place_imgs/{uniqfilename}'
+    uniq_filename = f"{instance.id}.{filename.split('.')[-1]}"
+    return f'place_images/{uniq_filename}'
 
 
 class Place(models.Model):
@@ -17,7 +17,7 @@ class Place(models.Model):
     description_long = models.TextField(verbose_name='Полное описание')
     longitude = models.FloatField(verbose_name='Долгота')
     latitude = models.FloatField(verbose_name='Широта')
-    imgs = models.ManyToManyField('Image', related_name='places',
+    images = models.ManyToManyField('Image', related_name='places',
                                   verbose_name='Фотографии')
 
     def __str__(self):
