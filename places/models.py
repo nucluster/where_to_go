@@ -18,7 +18,7 @@ class Place(models.Model):
     longitude = models.FloatField(verbose_name='Долгота')
     latitude = models.FloatField(verbose_name='Широта')
     images = models.ManyToManyField('Image', related_name='places',
-                                  verbose_name='Фотографии')
+                                    verbose_name='Фотографии')
 
     def __str__(self):
         return self.title

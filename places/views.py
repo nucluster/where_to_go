@@ -36,4 +36,5 @@ def get_place_by_id(request, pk):
         'imgs': [request.build_absolute_uri(image.image.url) for image in
                  place.images.all()],
     }
-    return JsonResponse(details, safe=False, json_dumps_params={"ensure_ascii": False, "indent": 2})
+    return JsonResponse(details, safe=False,
+                        json_dumps_params={"ensure_ascii": False, "indent": 2})
