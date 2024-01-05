@@ -36,7 +36,8 @@ class Place(models.Model):
 class Image(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     image = models.ImageField(upload_to=user_directory_path,
-                              verbose_name='Фотография')
+                              verbose_name='Фотография', blank=True)
+    extra_url = models.URLField(blank=True, verbose_name='Внешний URL')
 
     def __str__(self):
         return f'Фото {self.pk}'

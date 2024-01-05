@@ -28,13 +28,18 @@ def index(request):
 
 def get_place_by_id(request, pk):
     place = get_object_or_404(Place, id=pk)
+
+    def get_image_uri(image):
+        if not image.image:
+            return image.extra_url
+        return request.build_absolute_uri(image.image.url)
+
     details = {
         'title': place.title,
         'description_short': place.description_short,
         'description_long': place.description_long,
         'coordinates': place.coordinates,
-        'imgs': [request.build_absolute_uri(image.image.url) for image in
-                 place.images.all()],
+        'imgs': [get_image_uri(image) for image in place.images.all()],
     }
     return JsonResponse(details, safe=False,
                         json_dumps_params={"ensure_ascii": False, "indent": 2})
