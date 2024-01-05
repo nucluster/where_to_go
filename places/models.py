@@ -1,10 +1,4 @@
-import uuid
 from django.db import models
-
-
-def user_directory_path(instance, filename):
-    uniq_filename = f"{instance.id}.{filename.split('.')[-1]}"
-    return f'place_images/{uniq_filename}'
 
 
 class Place(models.Model):
@@ -28,11 +22,10 @@ class Place(models.Model):
 
 
 class Image(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     place = models.ForeignKey(
         Place, on_delete=models.CASCADE, related_name='images')
-    file = models.ImageField(upload_to=user_directory_path,
-                             verbose_name='Фотография', blank=True)
+    file = models.ImageField(upload_to='place_images/',
+                             verbose_name='Файл', blank=True)
     url = models.URLField(blank=True, verbose_name='Внешний URL')
 
     class Meta:
@@ -41,4 +34,4 @@ class Image(models.Model):
         ordering = ['-id']
 
     def __str__(self):
-        return f'Фото {self.id}'
+        return f'{self.pk} {self.place.title}'
