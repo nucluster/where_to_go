@@ -3,16 +3,16 @@ from .models import Place, Image
 
 
 class ImageInline(admin.TabularInline):
-    model = Place.images.through
+    model = Image
     extra = 1
 
 
 @admin.register(Place)
 class PlaceAdmin(admin.ModelAdmin):
     list_display = ('title',)
-    inlines = [ImageInline,]
+    inlines = [ImageInline, ]
 
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ('id',)
+    list_display = ('id', 'file', 'url')
