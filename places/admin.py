@@ -1,29 +1,31 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from adminsortable2.admin import SortableAdminMixin, SortableAdminBase, SortableTabularInline
 
 from .models import Place, Image
 
 
-class ImageInline(admin.TabularInline):
+class ImageInline(SortableTabularInline):
+    fields = ('file', 'get_preview', 'my_order')
+    readonly_fields = ('get_preview',)
+    ordering = ['my_order']
     model = Image
     extra = 1
 
+    def get_preview(self, obj):
+        return mark_safe(f'<img src="{obj.file.url}" width="200px" height="200px"/>')
+
 
 @admin.register(Place)
-class PlaceAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+class SortablePlaceAdmin(admin.ModelAdmin, SortableAdminMixin):
     inlines = [ImageInline, ]
 
 
 @admin.register(Image)
-class ImageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'file', 'preview')
-    readonly_fields = ('preview',)
+class SortableImageAdmin(admin.ModelAdmin, SortableAdminMixin):
+    ordering = ['my_order']
+    list_display = ('file', 'url', 'my_order')
+    readonly_fields = ('get_preview',)
 
-    def preview(self, obj):
-        return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-            url=obj.file.url,
-            width=obj.file.width,
-            height=obj.file.height,
-        )
-    )
+    def get_preview(self, obj):
+        return mark_safe(f'<img src="{obj.file.url}" width="200px" height="200px"/>')

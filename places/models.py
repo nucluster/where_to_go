@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -7,6 +8,7 @@ class Place(models.Model):
     description_long = models.TextField(verbose_name='Полное описание')
     longitude = models.FloatField(verbose_name='Долгота')
     latitude = models.FloatField(verbose_name='Широта')
+
 
     class Meta:
         verbose_name = 'Место'
@@ -24,14 +26,24 @@ class Place(models.Model):
 class Image(models.Model):
     place = models.ForeignKey(
         Place, on_delete=models.CASCADE, related_name='images')
-    file = models.ImageField(upload_to='place_images/',
+    file = models.ImageField(upload_to='places/',
                              verbose_name='Файл', blank=True)
     url = models.URLField(blank=True, verbose_name='Внешний URL')
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        verbose_name='Позиция'
+    )
 
     class Meta:
         verbose_name = 'Фотография'
         verbose_name_plural = 'Фотографии'
-        ordering = ['-id']
+        ordering = ['my_order']
+
+    @property
+    def get_absolute_image_url(self):
+        return f'{settings.MEDIA_URL}{self.file.url}'
 
     def __str__(self):
         return f'{self.pk} {self.place.title}'

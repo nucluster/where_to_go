@@ -20,20 +20,20 @@ def to_geojson(places):
     return geojson.FeatureCollection(features)
 
 
+def get_image_url(image):
+    if not image.file:
+        return image.url
+    return image.get_absolute_image_url
+
+
 def index(request):
     places = Place.objects.all()
     data = to_geojson(places)
     return render(request, 'index.html', {'data': data})
 
 
-def get_place_by_id(request, pk):
+def get_place_by_id(pk):
     place = get_object_or_404(Place, id=pk)
-
-    def get_image_url(image):
-        if not image.file:
-            return image.url
-        return request.build_absolute_uri(image.file.url)
-
     details = {
         'title': place.title,
         'description_short': place.description_short,
