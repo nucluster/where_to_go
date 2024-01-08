@@ -1,4 +1,4 @@
-from django.conf import settings
+# from django.conf import settings
 from django.db import models
 
 
@@ -8,7 +8,6 @@ class Place(models.Model):
     description_long = models.TextField(verbose_name='Полное описание')
     longitude = models.FloatField(verbose_name='Долгота')
     latitude = models.FloatField(verbose_name='Широта')
-
 
     class Meta:
         verbose_name = 'Место'
@@ -42,8 +41,10 @@ class Image(models.Model):
         ordering = ['my_order']
 
     @property
-    def get_absolute_image_url(self):
-        return f'{settings.MEDIA_URL}{self.file.url}'
+    def get_url(self):
+        if not self.file:
+            return self.url
+        return self.file.url
 
     def __str__(self):
-        return f'{self.pk} {self.place.title}'
+        return f'{self.id} {self.place.title}'
