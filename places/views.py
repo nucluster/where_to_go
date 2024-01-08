@@ -32,8 +32,8 @@ def index(request):
     return render(request, 'index.html', {'data': data})
 
 
-def get_place_by_id(pk):
-    place = get_object_or_404(Place, id=pk)
+def get_place_by_id(id):
+    place = get_object_or_404(Place, id=id)
     details = {
         'title': place.title,
         'description_short': place.description_short,

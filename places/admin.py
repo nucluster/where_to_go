@@ -13,7 +13,7 @@ class ImageInline(SortableTabularInline):
     extra = 1
 
     def get_preview(self, obj):
-        return mark_safe(f'<img src="{obj.file.url}" width="200px" height="200px"/>')
+        return mark_safe(f'<img src="{obj.file.url}" width="auto" height="200"/>')
 
 
 @admin.register(Place)
@@ -28,4 +28,4 @@ class SortableImageAdmin(admin.ModelAdmin, SortableAdminMixin):
     readonly_fields = ('get_preview',)
 
     def get_preview(self, obj):
-        return mark_safe(f'<img src="{obj.file.url}" width="200px" height="200px"/>')
+        return mark_safe(f'<img src="{obj.file.url}" width="auto" height="200%"/>')
