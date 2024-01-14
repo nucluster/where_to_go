@@ -132,3 +132,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js'
 TINYMCE_COMPRESSOR = False
+TINYMCE_DEFAULT_CONFIG = {
+    'language': 'ru',
+    'plugins': 'advlist,autolink,directionality,image,link,lists,media,nonbreaking,table,wordcount',
+    'toolbar': 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | link image',
+}
