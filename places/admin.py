@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from adminsortable2.admin import (SortableAdminMixin,
-                                  SortableAdminBase, SortableTabularInline)
+from adminsortable2.admin import (SortableAdminBase, SortableTabularInline)
 
 from .models import Place, Image
 
@@ -18,12 +17,12 @@ class SortableImageInline(SortableTabularInline):
 
 
 @admin.register(Place)
-class SortablePlaceAdmin(admin.ModelAdmin, SortableAdminMixin):
+class SortablePlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [SortableImageInline, ]
 
 
 @admin.register(Image)
-class SortableImageAdmin(admin.ModelAdmin, SortableAdminMixin):
+class SortableImageAdmin(admin.ModelAdmin):
     list_display = ('file', 'url', 'get_preview', 'my_order')
     readonly_fields = ('get_preview',)
     ordering = ['my_order']
