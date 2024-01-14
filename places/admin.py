@@ -1,6 +1,8 @@
 from django.contrib import admin
+from django.db import models
 from django.utils.safestring import mark_safe
 from adminsortable2.admin import (SortableAdminBase, SortableTabularInline)
+from tinymce.widgets import TinyMCE
 
 from .models import Place, Image
 
@@ -19,6 +21,9 @@ class SortableImageInline(SortableTabularInline):
 @admin.register(Place)
 class SortablePlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [SortableImageInline, ]
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()},
+    }
 
 
 @admin.register(Image)
