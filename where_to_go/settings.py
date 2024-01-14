@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import environs
@@ -18,7 +19,7 @@ SECRET_KEY = env.str("SECRET_KEY", default='super-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 
 # Application definition
@@ -71,10 +72,9 @@ WSGI_APPLICATION = 'where_to_go.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": env.dj_db_url(
+        "DATABASE_URL", default="sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3"), ssl_require=not DEBUG
+    )
 }
 
 
@@ -113,10 +113,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

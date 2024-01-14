@@ -4,3 +4,4 @@ geojson
 django-admin-sortable2
 django-tinymce
 environs
+dj-database-url
