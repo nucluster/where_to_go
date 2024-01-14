@@ -3,3 +3,4 @@ Pillow
 geojson
 django-admin-sortable2
 django-tinymce
+environs
