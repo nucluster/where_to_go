@@ -1,5 +1,6 @@
-# from django.conf import settings
+import requests
 from django.db import models
+from django.core.files.base import ContentFile
 
 
 class Place(models.Model):
@@ -48,3 +49,26 @@ class Image(models.Model):
 
     def __str__(self):
         return f'{self.id} {self.place.title}'
+
+    def download_image(self):
+        if self.url and not self.file:
+            try:
+                # Загрузка изображения с указанного URL
+                response = requests.get(self.url)
+                response.raise_for_status()  # Проверка наличия ошибок при запросе
+
+                # Получение данных изображения
+                image_data = response.content
+
+                # Создание объекта File из данных изображения
+                image_file = ContentFile(image_data)
+
+                # Сохранение данных в поле ImageField
+                self.file.save(
+                    f'image_{self.id}.jpg', image_file, save=True)
+
+                print(
+                    f'Image successfully loaded and saved to {self.file.path}.')
+
+            except requests.exceptions.RequestException as e:
+                print(f'Error downloading image: {e}')
