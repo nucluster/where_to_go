@@ -28,7 +28,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         folder = options['folder']
         json_data_list = read_json_from_folder(folder)
-        for index, json_data in enumerate(json_data_list):
+        for index, json_data in enumerate(json_data_list, start=1):
             # pprint(json_data)
             place = Place.objects.get_or_create(
                 title=json_data['title'],
