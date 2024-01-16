@@ -44,8 +44,8 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(
                     f'Place {index} JSON data successfully loaded and saved to the database.'))
 
-                for img in Image.objects.all():
-                    img.download_image()
+                # for img in Image.objects.all():
+                #     img.download_image()
             else:
                 self.stdout.write(self.style.SUCCESS(
                     f'JSON data has already been saved to the database.'))

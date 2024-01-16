@@ -36,6 +36,10 @@ class Image(models.Model):
         null=False,
         verbose_name='Позиция'
     )
+    image_number = models.PositiveIntegerField(
+        verbose_name='Порядковый номер картинки места',
+        blank=True
+    )
 
     class Meta:
         verbose_name = 'Фотография'
@@ -48,8 +52,13 @@ class Image(models.Model):
             return self.url
         return self.file.url
 
+    def save(self):
+        files_cnt = len([image for image in self.place.images.all()])
+        self.image_number = files_cnt + 1
+        super().save()
+
     def __str__(self):
-        return f'{self.id} {self.place.title}'
+        return f'{self.image_number} {self.place.title}'
 
     def download_image(self):
         if self.url and not self.file:
@@ -59,7 +68,7 @@ class Image(models.Model):
                 image_data = response.content
                 image_file = ContentFile(image_data)
                 self.file.save(
-                    f'{slugify(self.place.title)}_{self.id}.jpg', image_file, save=True)
+                    f'{slugify(self.place.title)}_{self.image_number}.jpg', image_file, save=True)
                 print(
                     f'Image successfully loaded and saved to {self.file.path}.')
             except requests.exceptions.RequestException as e:
