@@ -14,16 +14,10 @@ class Command(BaseCommand):
         url = options['url']
 
         try:
-            # Загрузка JSON с указанного URL
             response = requests.get(url)
-            response.raise_for_status()  # Проверка наличия ошибок при запросе
-
-            # Преобразование JSON в словарь
+            response.raise_for_status()
             json_data = response.json()
             pprint(json_data)
-
-            # Сохранение данных в базу данных
-            # Создание экземпляра
             place = Place.objects.get_or_create(
                 title=json_data['title'],
                 description_short=json_data['description_short'],
@@ -31,7 +25,6 @@ class Command(BaseCommand):
                 longitude=json_data['coordinates']['lng'],
                 latitude=json_data['coordinates']['lat'],
             )
-            print(place)
             [Image.objects.get_or_create(
                 url=url, place=place[0]) for url in json_data['imgs']]
 

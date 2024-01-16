@@ -5,4 +5,5 @@ django-admin-sortable2
 django-tinymce
 environs
 dj-database-url
+pytils
 # mysqlclient - For deployment to eu.pythonanywhere.com using MySQL
