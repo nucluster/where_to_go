@@ -6,4 +6,5 @@ django-tinymce
 environs
 dj-database-url
 pytils
+requests
 # mysqlclient - For deployment to eu.pythonanywhere.com using MySQL
