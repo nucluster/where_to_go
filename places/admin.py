@@ -28,7 +28,7 @@ class SortablePlaceAdmin(SortableAdminBase, admin.ModelAdmin):
 
 @admin.register(Image)
 class SortableImageAdmin(admin.ModelAdmin):
-    list_display = ('image_number', 'file', 'url', 'get_preview', 'my_order')
+    list_display = ('file', 'url', 'get_preview', 'my_order')
     readonly_fields = ('get_preview',)
     ordering = ['my_order']
 
