@@ -31,9 +31,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(
                 'JSON data successfully loaded and saved to the database.'))
 
-            for img in Image.objects.all():
-                img.download_image()
-
         except requests.exceptions.RequestException as e:
             self.stdout.write(self.style.ERROR(
                 f'Error downloading or decoding JSON: {e}'))
