@@ -8,9 +8,9 @@ from .models import Place, Image
 
 
 class SortableImageInline(SortableTabularInline):
-    fields = ('file', 'get_preview', 'my_order')
+    fields = ('file', 'get_preview', 'order')
     readonly_fields = ('get_preview',)
-    ordering = ['my_order']
+    ordering = ['order']
     model = Image
     extra = 1
 
@@ -28,9 +28,9 @@ class SortablePlaceAdmin(SortableAdminBase, admin.ModelAdmin):
 
 @admin.register(Image)
 class SortableImageAdmin(admin.ModelAdmin):
-    list_display = ('file', 'url', 'get_preview', 'my_order')
+    list_display = ('file', 'url', 'get_preview', 'order')
     readonly_fields = ('get_preview',)
-    ordering = ['my_order']
+    ordering = ['order']
 
     def get_preview(self, obj):
         return mark_safe(f'<img src="{obj.get_url}" width="200px" height="200px"/>')

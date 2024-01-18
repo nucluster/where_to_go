@@ -30,17 +30,18 @@ class Image(models.Model):
     file = models.ImageField(upload_to='places/',
                              verbose_name='Файл', blank=True)
     url = models.URLField(blank=True, verbose_name='Внешний URL')
-    my_order = models.PositiveIntegerField(
+    order = models.PositiveIntegerField(
         default=0,
         blank=False,
         null=False,
         verbose_name='Позиция'
     )
+    image_number = models.PositiveIntegerField(null=True, blank=True, verbose_name='Порядковый номер фото')
 
     class Meta:
         verbose_name = 'Фотография'
         verbose_name_plural = 'Фотографии'
-        ordering = ['my_order']
+        ordering = ['order']
 
     @property
     def get_url(self):
@@ -49,7 +50,13 @@ class Image(models.Model):
         return self.file.url
 
     def __str__(self):
-        return f'{self.id} {self.place.title}'
+        return f'{self.image_number} {self.place.title}'
+
+    def save(self, *args, **kwargs):
+        if not self.image_number:
+            last_image = Image.objects.filter(place=self.place).order_by('-image_number').first()
+            self.image_number = last_image.image_number + 1 if last_image else 1
+        super().save(*args, **kwargs)
 
     def download_image(self):
         if self.url and not self.file:
@@ -59,7 +66,7 @@ class Image(models.Model):
                 image_data = response.content
                 image_file = ContentFile(image_data)
                 self.file.save(
-                    f'{slugify(self.place.title)}_{self.id}.jpg', image_file, save=True)
+                    f'{slugify(self.place.title)}_{self.image_number}.jpg', image_file, save=True)
                 print(
                     f'Image successfully loaded and saved to {self.file.path}.')
             except requests.exceptions.RequestException as e:
