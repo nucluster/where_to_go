@@ -1,10 +1,10 @@
+from adminsortable2.admin import SortableAdminBase, SortableTabularInline
 from django.contrib import admin
 from django.db import models
 from django.utils.safestring import mark_safe
-from adminsortable2.admin import (SortableAdminBase, SortableTabularInline)
 from tinymce.widgets import TinyMCE
 
-from .models import Place, Image
+from .models import Image, Place
 
 
 class SortableImageInline(SortableTabularInline):

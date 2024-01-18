@@ -1,6 +1,6 @@
 import requests
-from django.db import models
 from django.core.files.base import ContentFile
+from django.db import models
 from pytils.translit import slugify
 
 
@@ -27,8 +27,8 @@ class Place(models.Model):
 class Image(models.Model):
     place = models.ForeignKey(
         Place, on_delete=models.CASCADE, related_name='images')
-    file = models.ImageField(upload_to='places/',
-                             verbose_name='Файл', blank=True)
+    file = models.ImageField(
+        upload_to='places/', verbose_name='Файл', blank=True)
     url = models.URLField(blank=True, verbose_name='Внешний URL')
     order = models.PositiveIntegerField(
         default=0,
@@ -36,7 +36,8 @@ class Image(models.Model):
         null=False,
         verbose_name='Позиция'
     )
-    image_number = models.PositiveIntegerField(null=True, blank=True, verbose_name='Порядковый номер фото')
+    image_number = models.PositiveIntegerField(
+        null=True, blank=True, verbose_name='Порядковый номер фото', default=1)
 
     class Meta:
         verbose_name = 'Фотография'
@@ -54,8 +55,10 @@ class Image(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.image_number:
-            last_image = Image.objects.filter(place=self.place).order_by('-image_number').first()
-            self.image_number = last_image.image_number + 1 if last_image else 1
+            last_image = Image.objects.filter(
+                place=self.place).order_by('-image_number').first()
+            if last_image:
+                self.image_number = last_image.image_number + 1
         super().save(*args, **kwargs)
 
     def download_image(self):
@@ -66,7 +69,8 @@ class Image(models.Model):
                 image_data = response.content
                 image_file = ContentFile(image_data)
                 self.file.save(
-                    f'{slugify(self.place.title)}_{self.image_number}.jpg', image_file, save=True)
+                    f'{slugify(self.place.title)}_{self.image_number}.jpg',
+                    image_file, save=True)
                 print(
                     f'Image successfully loaded and saved to {self.file.path}.')
             except requests.exceptions.RequestException as e:
