@@ -20,6 +20,7 @@ class SortableImageInline(SortableTabularInline):
 
 @admin.register(Place)
 class SortablePlaceAdmin(SortableAdminBase, admin.ModelAdmin):
+    exclude = ('order', 'image_number')
     inlines = [SortableImageInline, ]
     formfield_overrides = {
         models.TextField: {'widget': TinyMCE()},

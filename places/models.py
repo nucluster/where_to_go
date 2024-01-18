@@ -36,7 +36,8 @@ class Image(models.Model):
         null=False,
         verbose_name='Позиция'
     )
-    image_number = models.PositiveIntegerField(null=True, blank=True, verbose_name='Порядковый номер фото')
+    image_number = models.PositiveIntegerField(
+        null=True, blank=True, verbose_name='Порядковый номер фото')
 
     class Meta:
         verbose_name = 'Фотография'
@@ -54,7 +55,8 @@ class Image(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.image_number:
-            last_image = Image.objects.filter(place=self.place).order_by('-image_number').first()
+            last_image = Image.objects.filter(
+                place=self.place).order_by('-image_number').first()
             self.image_number = last_image.image_number + 1 if last_image else 1
         super().save(*args, **kwargs)
 
