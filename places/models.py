@@ -37,7 +37,7 @@ class Image(models.Model):
         verbose_name='Позиция'
     )
     image_number = models.PositiveIntegerField(
-        null=True, blank=True, verbose_name='Порядковый номер фото', default=1)
+        null=True, blank=True, verbose_name='Порядковый номер фото', default=0)
 
     class Meta:
         verbose_name = 'Фотография'
@@ -59,6 +59,8 @@ class Image(models.Model):
                 place=self.place).order_by('-image_number').first()
             if last_image:
                 self.image_number = last_image.image_number + 1
+            else:
+                self.image_number = 1
         super().save(*args, **kwargs)
 
     def download_image(self):
