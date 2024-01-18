@@ -1,5 +1,4 @@
-
-from django.urls import path, include
+from django.urls import path
 
 from places.views import get_place_by_id
 
