@@ -27,7 +27,7 @@ def index(request):
 
 
 def get_place_by_id(request, id):
-    place = get_object_or_404(Place, id=id)
+    place = get_object_or_404(Place.objects.prefetch_related('images'), id=id)
     details = {
         'title': place.title,
         'description_short': place.description_short,
