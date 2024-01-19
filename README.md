@@ -92,7 +92,7 @@ python manage.py dwnld_images
 Файлы фотографий будут сохранены в папку media с нумерацией порядкого номера фотографии локации и названием локации на транслите.
 Пример:
 ```
-
+media/places/ostankinskaya-telebashnya_3.jpg
 ```
 Запуск:
 ```
