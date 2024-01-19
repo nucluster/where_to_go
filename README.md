@@ -1,11 +1,65 @@
-# Куда пойти — Москва глазами Артёма
 
-## `.env`
+![Static Badge](https://img.shields.io/badge/python_version-3.8%7C3.9%7C3.10%7C3.11%7C3.12-brightgreen?style=for-the-badge&logo=python)
+![Static Badge](https://img.shields.io/badge/django_version-4.2.9-brightgreen?style=for-the-badge&logo=django)
 
-```bash
-# .env
-DEBUG=True
+## Сайт "Куда пойти"
+![scrinshot](https://dvmn.org/media/lessons/ezgif.com-gif-maker_4nWhtfQ.gif)
+### Описание проекта
+
+Сервис для отображения локаций на карте, а также добавления описания и фотографий к ним.
+
+### Основные возможности проекта
+- Создание, удаление и редактирование локаций на карте с использованием интерфейса администратора;
+- Добавление картинок к локациям;
+- Возможность выбора очередности показа картинок.
+
+
+### Как запустить проект:
+
+Для запуска проекта на локальной машине у вас должны быть установлены Python, git.
+
+Клонируйте репозиторий:
 ```
+git clone git@github.com:nucluster/where_to_go.git
+```
+
+Измените свою текущую рабочую директорию:
+```
+cd where_to_go
+```
+Создайте и активируйте виртуальное окружение, установите зависимости:
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Создайте .env файл следующего содержания:
+```
+DEBUG=True
+SECRET_KEY=[ваш_секретный_ключ]
+``` 
+
+Примените миграции:
+```
+python manage.py migrate
+```
+
+Создайте суперпользователя Django:
+```
+python manage.py createsuperuser
+```
+Для создания тестового суперпользователя можно воспользваться командой:
+```
+python manage.py superuser
+```
+Будет создан суперпользователь login: admin, password: 12345.
+
+Для загрузки данных из json-файлов в БД:
+```
+python manage.py load_places [путь к папке с файлами локаций]
+```
+Формат файла локации:
 ```json
 {
     "title": "Экскурсионная компания «Легенды Москвы»",
@@ -25,4 +79,27 @@ DEBUG=True
     }
 }
 ```
-[https://jasgzym9t.eu.pythonanywhere.com/]
+Для загрузки данных из json-файла по ссылке:
+```
+python manage.py load_place [ссылка]
+```
+Фотографии локаций будут подгружаться по ссылке.
+
+Для загрузки и сохранении фотографий на локальный компьютер:
+```
+python manage.py dwnld_images
+```
+Файлы фотографий будут сохранены в папку media с нумерацией порядкого номера фотографии локации и названием локации на транслите.
+Пример:
+```
+
+```
+Запуск:
+```
+python manage.py runserver
+```
+
+Работающий сайт доступен по адресу:
+
+https://jasgzym9t.eu.pythonanywhere.com/
+ 
