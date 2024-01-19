@@ -3,7 +3,7 @@
 ![Static Badge](https://img.shields.io/badge/django_version-4.2.9-brightgreen?style=for-the-badge&logo=django)
 
 ## Сайт "Куда пойти"
-![scrinshot](https://dvmn.org/media/lessons/ezgif.com-gif-maker_4nWhtfQ.gif)
+![scrinshot](static/img/live_screenshot.gif)
 ### Описание проекта
 
 Сервис для отображения локаций на карте, а также добавления описания и фотографий к ним.
