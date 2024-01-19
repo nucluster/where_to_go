@@ -30,8 +30,8 @@ def get_place_by_id(request, id):
     place = get_object_or_404(Place.objects.prefetch_related('images'), id=id)
     details = {
         'title': place.title,
-        'description_short': place.description_short,
-        'description_long': place.description_long,
+        'description_short': place.short_description,
+        'description_long': place.long_description,
         'coordinates': place.coordinates,
         'imgs': [image.get_url for image in place.images.all()],
     }

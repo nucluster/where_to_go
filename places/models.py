@@ -4,11 +4,11 @@ from pytils.translit import slugify
 
 class Place(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название места')
-    description_short = models.TextField(
+    short_description = models.TextField(
         verbose_name='Краткое описание',
         blank=True
     )
-    description_long = models.TextField(
+    long_description = models.TextField(
         verbose_name='Полное описание',
         blank=True
     )
