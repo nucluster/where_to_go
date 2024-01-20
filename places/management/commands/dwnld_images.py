@@ -1,8 +1,7 @@
 import requests
-from django.core.management.base import BaseCommand
 from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand
 from pytils.translit import slugify
-from django.db.models import Q
 
 from places.models import Image
 
@@ -11,7 +10,7 @@ class Command(BaseCommand):
     help = 'Download images'
 
     def handle(self, *args, **options):
-        for image in Image.objects.filter(~Q(url=''), file=''):
+        for image in Image.objects.filter(file=''):
             try:
                 response = requests.get(image.url)
                 response.raise_for_status()

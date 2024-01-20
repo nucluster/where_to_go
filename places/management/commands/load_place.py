@@ -1,6 +1,6 @@
 import requests
-from django.core.management.base import BaseCommand
 from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand
 from pytils.translit import slugify
 
 from places.models import Image, Place
