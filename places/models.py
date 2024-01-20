@@ -3,15 +3,9 @@ from pytils.translit import slugify
 
 
 class Place(models.Model):
-    title = models.CharField(max_length=255, verbose_name='Название места')
-    short_description = models.TextField(
-        verbose_name='Краткое описание',
-        blank=True
-    )
-    long_description = models.TextField(
-        verbose_name='Полное описание',
-        blank=True
-    )
+    title = models.CharField('Название места', max_length=255, unique=True)
+    short_description = models.TextField('Краткое описание', blank=True)
+    long_description = models.TextField('Полное описание', blank=True)
     longitude = models.FloatField(verbose_name='Долгота')
     latitude = models.FloatField(verbose_name='Широта')
 

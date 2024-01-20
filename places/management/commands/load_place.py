@@ -1,7 +1,7 @@
-from django.core.management.base import BaseCommand
 import requests
-from pprint import pprint
-from places.models import Place, Image
+from django.core.management.base import BaseCommand
+
+from places.models import Image, Place
 
 
 class Command(BaseCommand):
@@ -16,17 +16,16 @@ class Command(BaseCommand):
         try:
             response = requests.get(url)
             response.raise_for_status()
-            json_data = response.json()
-            pprint(json_data)
+            raw_place = response.json()
             place = Place.objects.get_or_create(
-                title=json_data['title'],
-                description_short=json_data['description_short'],
-                description_long=json_data['description_long'],
-                longitude=json_data['coordinates']['lng'],
-                latitude=json_data['coordinates']['lat'],
+                title=raw_place['title'],
+                description_short=raw_place['short_description'],
+                description_long=raw_place['long_description'],
+                longitude=raw_place['coordinates']['lng'],
+                latitude=raw_place['coordinates']['lat'],
             )
             [Image.objects.get_or_create(
-                url=url, place=place[0]) for url in json_data['imgs']]
+                url=url, place=place[0]) for url in raw_place['imgs']]
 
             self.stdout.write(self.style.SUCCESS(
                 'JSON data successfully loaded and saved to the database.'))

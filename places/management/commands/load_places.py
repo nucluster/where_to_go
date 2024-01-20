@@ -1,21 +1,23 @@
 import json
 import os
+
 from django.core.management.base import BaseCommand
-from places.models import Place, Image
+
+from places.models import Image, Place
 
 
 def read_json_from_folder(folder_path):
-    json_data = []
+    files = []
     for filename in os.listdir(folder_path):
         full_path = os.path.join(folder_path, filename)
         if os.path.isfile(full_path) and filename.endswith('.json'):
             try:
                 with open(full_path, 'r', encoding='utf-8') as file:
                     data = json.load(file)
-                    json_data.append(data)
+                    files.append(data)
             except json.JSONDecodeError as e:
                 print(f'Error decoding JSON in the file {filename}: {e}')
-    return json_data
+    return files
 
 
 class Command(BaseCommand):
@@ -26,22 +28,22 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         folder = options['folder']
-        json_data_list = read_json_from_folder(folder)
-        for index, json_data in enumerate(json_data_list, start=1):
-            place = Place.objects.get_or_create(
-                title=json_data['title'],
-                description_short=json_data['description_short'],
-                description_long=json_data['description_long'],
-                longitude=json_data['coordinates']['lng'],
-                latitude=json_data['coordinates']['lat'],
+        places = read_json_from_folder(folder)
+        for index, raw_place in enumerate(places, start=1):
+            place, created = Place.objects.get_or_create(
+                title=raw_place['title'],
+                description_short=raw_place['description_short'],
+                description_long=raw_place['description_long'],
+                longitude=raw_place['coordinates']['lng'],
+                latitude=raw_place['coordinates']['lat'],
             )
-            if place[1]:
+            if created:
                 [Image.objects.get_or_create(
-                    url=url, place=place[0]) for url in json_data['imgs']]
+                    url=url, place=place) for url in place['imgs']]
 
                 self.stdout.write(self.style.SUCCESS(
-                    f'Place {index} {place[0].title} JSON data successfully loaded and saved to the database.'))
+                    f'Place {index} {raw_place[0].title} JSON data successfully loaded and saved to the database.'))
 
             else:
                 self.stdout.write(self.style.SUCCESS(
-                    f'JSON data for place {index} {place[0].title} has already been saved to the database.'))
+                    f'JSON data for place {index} {raw_place[0].title} has already been saved to the database.'))
