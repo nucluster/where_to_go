@@ -8,6 +8,10 @@ from tinymce.widgets import TinyMCE
 from .models import Image, Place
 
 
+MAX_WIDTH = '50%'
+MAX_HEIGHT = '200px'
+
+
 class SortableImageInline(SortableTabularInline):
     fields = ('file', 'get_preview', 'order')
     readonly_fields = ('get_preview',)
@@ -16,7 +20,12 @@ class SortableImageInline(SortableTabularInline):
     extra = 1
 
     def get_preview(self, image):
-        return format_html(f'<img src="{image.get_url}" max-width="50%" height="200px"/>')
+        return format_html(
+            '<img src={} max-width={} height={}/>',
+            image.get_url,
+            MAX_WIDTH,
+            MAX_HEIGHT
+        )
 
 
 @admin.register(Place)
@@ -52,4 +61,9 @@ class SortableImageAdmin(admin.ModelAdmin):
     autocomplete_fields = ('place',)
 
     def get_preview(self, image):
-        return format_html(f'<img src="{image.get_url}" max-width="50%" height="200px"/>')
+        return format_html(
+            '<img src={} max-width={} height={}/>',
+            image.get_url,
+            MAX_WIDTH,
+            MAX_HEIGHT
+        )
