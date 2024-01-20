@@ -46,7 +46,7 @@ class ImageForm(forms.ModelForm):
         url = cleaned_data.get('url')
         file = cleaned_data.get('file')
         if not url and not file:
-            raise forms.ValidationError("Должно быть заполнено поле 'Внешний URL' или 'Файл'")
+            raise forms.ValidationError('Должно быть заполнено поле "Внешний URL" или "Файл"')
         return cleaned_data
 
 

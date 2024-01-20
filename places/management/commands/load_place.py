@@ -1,5 +1,7 @@
 import requests
 from django.core.management.base import BaseCommand
+from django.core.files.base import ContentFile
+from pytils.translit import slugify
 
 from places.models import Image, Place
 
@@ -17,18 +19,34 @@ class Command(BaseCommand):
             response = requests.get(url)
             response.raise_for_status()
             raw_place = response.json()
-            place = Place.objects.get_or_create(
+            defaults = {
+                'short_description': raw_place['description_short'],
+                'long_description': raw_place['description_long'],
+                'longitude': raw_place['coordinates']['lng'],
+                'latitude': raw_place['coordinates']['lat'],
+            }
+            place, created = Place.objects.get_or_create(
                 title=raw_place['title'],
-                short_description=raw_place['description_short'],
-                long_description=raw_place['description_long'],
-                longitude=raw_place['coordinates']['lng'],
-                latitude=raw_place['coordinates']['lat'],
+                defaults=defaults
             )
-            [Image.objects.get_or_create(
-                url=url, place=place[0]) for url in raw_place['imgs']]
+            if created:
+                for url in raw_place['imgs']:
+                    image, _ = Image.objects.get_or_create(
+                        url=url, place=place)
+                    response = requests.get(url)
+                    response.raise_for_status()
+                    image_data = response.content
+                    image_file = ContentFile(image_data)
+                    image.file.save(
+                        f'{slugify(place.title)}_{image.image_number}.jpg',
+                        image_file, save=True)
 
-            self.stdout.write(self.style.SUCCESS(
-                'JSON data successfully loaded and saved to the database.'))
+                self.stdout.write(self.style.SUCCESS(
+                    'JSON data and images successfully loaded and saved.'))
+            else:
+                self.stdout.write(self.style.SUCCESS(
+                    f'JSON data for place {place.title} has already been saved to the database.')
+                )
 
         except requests.exceptions.RequestException as e:
             self.stdout.write(self.style.ERROR(

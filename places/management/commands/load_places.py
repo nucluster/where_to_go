@@ -30,12 +30,15 @@ class Command(BaseCommand):
         folder = options['folder']
         places = read_json_from_folder(folder)
         for index, raw_place in enumerate(places, start=1):
+            defaults = {
+                'short_description': raw_place['description_short'],
+                'long_description': raw_place['description_long'],
+                'longitude': raw_place['coordinates']['lng'],
+                'latitude': raw_place['coordinates']['lat'],
+            }
             place, created = Place.objects.get_or_create(
                 title=raw_place['title'],
-                short_description=raw_place['description_short'],
-                long_description=raw_place['description_long'],
-                longitude=raw_place['coordinates']['lng'],
-                latitude=raw_place['coordinates']['lat'],
+                defaults=defaults
             )
             if created:
                 [Image.objects.get_or_create(
