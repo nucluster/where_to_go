@@ -7,9 +7,8 @@ from tinymce.widgets import TinyMCE
 
 from .models import Image, Place
 
-
-MAX_WIDTH = '50%'
-MAX_HEIGHT = '200px'
+MAX_WIDTH = 50  # picture preview max width, %
+MAX_HEIGHT = 200  # picture height, px
 
 
 class SortableImageInline(SortableTabularInline):
@@ -21,7 +20,7 @@ class SortableImageInline(SortableTabularInline):
 
     def get_preview(self, image):
         return format_html(
-            '<img src={} max-width={} height={}/>',
+            '<img src={} max-width="{}%" height="{}px"/>',
             image.get_url,
             MAX_WIDTH,
             MAX_HEIGHT
@@ -62,7 +61,7 @@ class SortableImageAdmin(admin.ModelAdmin):
 
     def get_preview(self, image):
         return format_html(
-            '<img src={} max-width={} height={}/>',
+            '<img src={} max-width="{}%" height="{}px"/>',
             image.get_url,
             MAX_WIDTH,
             MAX_HEIGHT
