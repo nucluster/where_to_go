@@ -34,7 +34,8 @@ class Image(models.Model):
         related_name='images', verbose_name='Место'
     )
     file = models.ImageField(
-        upload_to=user_directory_path, verbose_name='Файл', blank=True
+        upload_to=user_directory_path, verbose_name='Файл', blank=True,
+        null=True
     )
     url = models.URLField(blank=True, verbose_name='Внешний URL')
     order = models.PositiveIntegerField(

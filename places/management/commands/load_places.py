@@ -32,18 +32,18 @@ class Command(BaseCommand):
         for index, raw_place in enumerate(places, start=1):
             place, created = Place.objects.get_or_create(
                 title=raw_place['title'],
-                description_short=raw_place['description_short'],
-                description_long=raw_place['description_long'],
+                short_description=raw_place['description_short'],
+                long_description=raw_place['description_long'],
                 longitude=raw_place['coordinates']['lng'],
                 latitude=raw_place['coordinates']['lat'],
             )
             if created:
                 [Image.objects.get_or_create(
-                    url=url, place=place) for url in place['imgs']]
+                    url=url, place=place) for url in raw_place['imgs']]
 
                 self.stdout.write(self.style.SUCCESS(
-                    f'Place {index} {raw_place[0].title} JSON data successfully loaded and saved to the database.'))
+                    f'Place {index} {place.title} JSON data successfully loaded and saved to the database.'))
 
             else:
                 self.stdout.write(self.style.SUCCESS(
-                    f'JSON data for place {index} {raw_place[0].title} has already been saved to the database.'))
+                    f'JSON data for place {index} {place.title} has already been saved to the database.'))
