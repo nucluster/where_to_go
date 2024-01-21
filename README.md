@@ -111,3 +111,6 @@ python manage.py runserver
 
 https://jasgzym9t.eu.pythonanywhere.com/
  
+### Цели проекта
+
+Код написан в учебных целях — это урок в курсе по Python и веб-разработке на сайте [Devman](https://dvmn.org//referrals/Yed4SGKXOdwDYbhxSeEyEegk86g2dzs41SpzsVFa/).
