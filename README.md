@@ -20,7 +20,7 @@
 
 Клонируйте репозиторий:
 ```
-git clone git@github.com:nucluster/where_to_go.git
+git clone https://github.com/nucluster/where_to_go.git
 ```
 
 Измените свою текущую рабочую директорию:
